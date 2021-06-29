@@ -8,24 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var now = Date()
-    
+
     var body: some View {
-       RefreshableScrollView(onRefresh: { done in
-          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.now = Date()
-            done()
-          }
-        }) {
-          VStack {
-            ForEach(1..<20) {
-              Text("\(Calendar.current.date(byAdding: .hour, value: $0, to: now)!)")
-                 .padding(.bottom, 10)
-             }
-           }.padding()
-         }
-       }
+        NavigationView {
+            RefreshableScrollView(onRefresh: { done in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.now = Date()
+                    done()
+                }
+            }) {
+                VStack {
+                    ForEach(1 ..< 20) {
+                        Text("\(Calendar.current.date(byAdding: .hour, value: $0, to: now)!)")
+                            .padding(.bottom, 10)
+                    }
+                }.padding().navigationBarTitle("タイトル", displayMode: .inline)
+            }
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -33,4 +34,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
